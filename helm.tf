@@ -1,6 +1,10 @@
 resource "helm_release" "promtail" {
   name  = "promtail"
   chart = "charts/promtail"
+
+  depends_on = [
+    kubernetes_namespace.monitoring
+  ]
 }
 
 resource "helm_release" "loki" {
@@ -19,7 +23,8 @@ resource "helm_release" "grafana" {
   namespace = "monitoring"
 
   values = [
-    templatefile("charts/grafana/values.yaml", { adminUser = "${var.grafana_admin_user}", adminPassword = "${var.grafana_admin_password}" })
+    templatefile("charts/grafana/values.yaml",
+    { adminUser = "${var.grafana_admin_user}", adminPassword = "${var.grafana_admin_password}" })
   ]
 
   depends_on = [
