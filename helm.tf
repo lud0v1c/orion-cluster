@@ -1,31 +1,28 @@
-resource "helm_release" "promtail" {
-  name  = "promtail"
-  chart = "charts/promtail"
+resource "helm_release" "loki" {
+  name = "loki"
+
+  repository = "https://grafana.github.io/helm-charts"
+  chart      = "loki"
+  version    = ">= 2.8.1"
+
+  namespace = "monitoring"
 
   depends_on = [
     kubernetes_namespace.monitoring
   ]
 }
 
-resource "helm_release" "loki" {
-  name      = "loki"
-  chart     = "charts/loki"
-  namespace = "monitoring"
+resource "helm_release" "promtail" {
+  name = "promtail"
 
-  depends_on = [
-    helm_release.promtail
-  ]
-}
+  repository = "https://grafana.github.io/helm-charts"
+  chart      = "promtail"
+  version    = ">= 3.9.1"
 
-resource "helm_release" "grafana" {
-  name      = "grafana"
-  chart     = "charts/grafana"
-  namespace = "monitoring"
-
-  values = [
-    templatefile("charts/grafana/values.yaml",
-    { adminUser = "${var.grafana_admin_user}", adminPassword = "${var.grafana_admin_password}" })
-  ]
+  set {
+    name  = "config.lokiAddress"
+    value = "http://loki.monitoring:3100/loki/api/v1/push"
+  }
 
   depends_on = [
     helm_release.loki
