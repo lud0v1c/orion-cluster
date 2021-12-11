@@ -3,6 +3,11 @@ variable "kube_config" {
   default = "~/.kube/config"
 }
 
+variable "remote_state_secret_suffix" {
+  type    = string
+  default = "state"
+}
+
 variable "grafana_admin_user" {
   type = string
 }
