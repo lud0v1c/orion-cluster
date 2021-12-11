@@ -1,6 +1,6 @@
 variable "kube_config" {
   type    = string
-  default = "~/.kube/orion"
+  default = "~/.kube/config"
 }
 
 variable "grafana_admin_user" {
