@@ -8,6 +8,22 @@ variable "remote_state_secret_suffix" {
   default = "state"
 }
 
+variable "nfs_server" {
+  type = string
+}
+
+variable "nfs_path" {
+  type = string
+}
+
+variable "volume_music_path" {
+  type = string
+}
+
+variable "volume_data_path" {
+  type = string
+}
+
 variable "grafana_admin_user" {
   type = string
 }
